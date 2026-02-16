@@ -11,7 +11,7 @@ export default function Login({ setToken }) {
       setError(""); // ✅ clear previous errors
 
       const res = await axios.post(
-        "http://localhost:5000/login",
+        `${process.env.REACT_APP_API_URL}/login`,
         { email, password }
       );
 

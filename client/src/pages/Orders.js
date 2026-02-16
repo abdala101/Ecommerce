@@ -11,8 +11,8 @@ export default function Orders() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const orderRes = await axios.get("http://localhost:5000/orders");
-        const prodRes = await axios.get("http://localhost:5000/products");
+        const orderRes = await axios.get(`${process.env.REACT_APP_API_URL}/orders`);
+        const prodRes = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
 
         setOrders(orderRes.data);
         setProducts(prodRes.data);
@@ -41,7 +41,7 @@ export default function Orders() {
       setQuantity(1);
 
       // refresh orders
-      const orderRes = await axios.get("http://localhost:5000/orders");
+      const orderRes = await axios.get(`${process.env.REACT_APP_API_URL}/orders`);
       setOrders(orderRes.data);
     } catch (err) {
       // check if backend returned a 400 (insufficient stock)

@@ -16,7 +16,7 @@ export default function Analytics() {
 
   useEffect(() => {
   const fetchAnalytics = () => {
-    axios.get("http://localhost:5000/analytics")
+    axios.get(`${process.env.REACT_APP_API_URL}/analytics`)
       .then(res => setAnalytics(res.data));
   };
 

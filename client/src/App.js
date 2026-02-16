@@ -42,10 +42,11 @@ function App() {
   if (!token) return;
 
   try {
-    const analyticsRes = await axios.get("http://localhost:5000/analytics");
+    const analyticsRes = await axios.get(`${process.env.REACT_APP_API_URL}/analytics`)
+;
     setAnalytics(analyticsRes.data);
 
-    const productsRes = await axios.get("http://localhost:5000/products");
+    const productsRes = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
     setProducts(productsRes.data);
   } catch (err) {
     console.error(err);
