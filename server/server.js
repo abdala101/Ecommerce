@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
-
+const SECRET_KEY = process.env.SECRET_KEY;
 
 
 async function createAdmin() {
@@ -33,6 +33,7 @@ async function createAdmin() {
 createAdmin();
 
 
+// Login route
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -46,13 +47,14 @@ app.post("/login", async (req, res) => {
 
   const token = jwt.sign(
     { id: admin._id },
-    "SECRET_KEY",
+    SECRET_KEY,          // ✅ use environment variable
     { expiresIn: "1d" }
   );
 
   res.json({ token });
 });
 
+// Auth middleware
 function auth(req, res, next) {
   const header = req.headers.authorization;
   if (!header) return res.sendStatus(401);
@@ -60,7 +62,7 @@ function auth(req, res, next) {
   const token = header.split(" ")[1];
 
   try {
-    jwt.verify(token, "SECRET_KEY");
+    jwt.verify(token, SECRET_KEY);   // ✅ use environment variable
     next();
   } catch {
     res.sendStatus(403);
@@ -68,10 +70,16 @@ function auth(req, res, next) {
 }
 
 
+
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log("MongoDB Atlas connected"))
   .catch(err => console.error("MongoDB connection error:", err));
+
 
 // --- Product Routes using DB ---
 
